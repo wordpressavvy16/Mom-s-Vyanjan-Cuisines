@@ -104,8 +104,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               </div>
               <div>
                 <label htmlFor="password"className="block text-sm font-medium text-light-text dark:text-dark-text">Password*</label>
-                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={isLoginView ? 1 : 6} className="mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-yellow focus:border-secondary sm:text-sm dark:bg-dark-background dark:border-gray-600 dark:text-dark-text" autoComplete={isLoginView ? "current-password" : "new-password"} />
-                {!isLoginView && <p className="text-xs text-light-muted dark:text-dark-muted mt-1">Minimum 6 characters.</p>}
+                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={isLoginView ? 1 : 8} className="mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-yellow focus:border-secondary sm:text-sm dark:bg-dark-background dark:border-gray-600 dark:text-dark-text" autoComplete={isLoginView ? "current-password" : "new-password"} />
+                {!isLoginView && <p className="text-xs text-light-muted dark:text-dark-muted mt-1">Minimum 8 characters.</p>}
               </div>
                {!isLoginView && (
                 <div>

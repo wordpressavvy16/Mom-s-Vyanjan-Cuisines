@@ -3,5 +3,7 @@
   "description": "A web application for ordering delicious, home-style tiffin meals from MoM's Vyanjan. Features user authentication, cart management, meal customization, and an AI-powered chat assistant for meal inquiries.",
   "requestFramePermissions": [],
   "prompt": "",
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

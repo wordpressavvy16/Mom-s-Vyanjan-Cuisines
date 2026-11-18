@@ -90,7 +90,6 @@ const MOCK_ORDERS_DB: Order[] = [ // Removed export
 ];
 
 
-const FALLBACK_API_KEY = "YOUR_GEMINI_API_KEY_HERE";  // Removed export
 
 // MEAL_SLOTS_CONFIG and MOCK_MEALS are removed.
 // They will be loaded from configService.ts which handles localStorage.

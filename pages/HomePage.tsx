@@ -7,7 +7,8 @@ import TestimonialCard from '../components/TestimonialCard';
 import SocialFeedMockup from '../components/SocialFeedMockup';
 import { useAuth } from '../context/AuthContext';
 import { useSiteSettings } from '../context/SiteSettingsContext';
-import { getTodaysScheduledMeals, getTestimonials, getSocialFeedItems, getMainSocialLinks } from '../services/configService';
+import { getTodaysScheduledMeals } from '../services/configService';
+import * as apiService from '../services/apiService';
 import TypingEffect from '../components/TypingEffect';
 
 // A simple hook to detect when an element is in the viewport
@@ -87,13 +88,14 @@ const HomePage: React.FC = () => {
         const scheduledMeals = getTodaysScheduledMeals(slot); 
         setDailyMenu(scheduledMeals);
         
-        const fetchedTestimonials = getTestimonials();
+        const [fetchedTestimonials, fetchedSocialFeedItems, fetchedLinks] = await Promise.all([
+          apiService.fetchTestimonials(),
+          apiService.fetchSocialFeedItems(),
+          apiService.fetchMainSocialLinks(),
+        ]);
         setTestimonials(fetchedTestimonials);
-
-        const fetchedSocialFeedItems = getSocialFeedItems();
         setSocialFeedItems(fetchedSocialFeedItems);
-        
-        setMainSocialLinks(getMainSocialLinks());
+        setMainSocialLinks(fetchedLinks);
 
       } catch (error) {
         console.error("Failed to load homepage data:", error);

@@ -46,6 +46,12 @@ const OrderTrackingPage: React.FC = () => {
       }
     };
     loadOrder();
+    const unsubscribe = apiService.subscribeToOrder(orderId, (updatedOrder) => {
+      setOrder(updatedOrder);
+    });
+    return () => {
+      unsubscribe();
+    };
   }, [orderId, currentUser]);
 
   if (loading) {

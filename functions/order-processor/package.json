@@ -1,0 +1,10 @@
+{
+  "name": "order-processor",
+  "version": "1.0.0",
+  "description": "Appwrite Function for MoM's Vyanjan order confirmation and loyalty points calculation",
+  "main": "src/main.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^14.1.0"
+  }
+}

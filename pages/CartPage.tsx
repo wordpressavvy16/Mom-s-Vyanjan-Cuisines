@@ -7,7 +7,7 @@ import { useSiteSettings } from '../context/SiteSettingsContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getAvailableDeliverySlots } from '../utils/timeUtils';
 import MealCard from '../components/MealCard';
-import { getManagedMeals } from '../services/configService';
+import * as apiService from '../services/apiService';
 
 
 const EmptyCartContent: React.FC = () => {
@@ -15,11 +15,10 @@ const EmptyCartContent: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch a few meals to suggest
-        const allMeals = getManagedMeals();
-        // Simple logic: show first 3 meals as "popular". A real app would have better logic.
-        setPopularMeals(allMeals.slice(0, 3)); 
-        setLoading(false);
+        apiService.fetchMeals()
+          .then(allMeals => setPopularMeals(allMeals.slice(0, 3)))
+          .catch(() => setPopularMeals([]))
+          .finally(() => setLoading(false));
     }, []);
 
     return (

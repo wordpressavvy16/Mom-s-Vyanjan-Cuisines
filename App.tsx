@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { pingAppwrite } from './services/appwriteClient';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -29,6 +30,10 @@ import RefundPolicyPage from './pages/RefundPolicyPage';
 
 const AppContent = () => {
   const { isAuthModalOpen, closeAuthModal } = useAuth();
+
+  useEffect(() => {
+    void pingAppwrite();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen font-sans">

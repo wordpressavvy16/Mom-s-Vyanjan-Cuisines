@@ -32,6 +32,7 @@ import {
     getSiteSettings, saveSiteSettings
 } from '../services/configService';
 import { fetchAllOrders, updateOrderStatus as mockAdminUpdateOrderStatus } from '../services/mockDataService';
+import * as apiService from '../services/apiService';
 import { DIETARY_OPTIONS as ALL_DIETARY_OPTIONS } from '../constants';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
@@ -592,60 +593,81 @@ export const DashboardPage: React.FC = () => {
 
   const loadAllAdminData = useCallback(async () => {
     setLoadingMessage("Loading dashboard data...");
-    setSlotConfigs(getConfiguredMealSlots());
-    const allMeals = getManagedMeals(currentUser!);
-    setMeals(allMeals);
-    setAllAvailableMealsForPlanner(allMeals); 
-    setDailyMenuSchedules(getDailyMenuSchedules()); 
+    const [
+      remoteSlots,
+      remoteMeals,
+      remoteSchedules,
+      remoteUsers,
+      remotePartnerApps,
+      remoteTestimonials,
+      remoteSocialItems,
+      remoteSocialLinks,
+      remoteSiteSettings,
+      orders,
+    ] = await Promise.all([
+      apiService.fetchMealSlotsConfig().catch(() => getConfiguredMealSlots()),
+      apiService.fetchDashboardMeals(currentUser!).catch(() => getManagedMeals(currentUser!)),
+      apiService.fetchDailyMenuSchedules().catch(() => getDailyMenuSchedules()),
+      apiService.fetchManagedUsers().catch(() => getManagedUsers()),
+      apiService.fetchPartnerApplications().catch(() => getPartnerApplications()),
+      apiService.fetchTestimonials().catch(() => getTestimonials()),
+      apiService.fetchSocialFeedItems().catch(() => getSocialFeedItems()),
+      apiService.fetchMainSocialLinks().catch(() => getMainSocialLinks()),
+      apiService.fetchSiteSettings().catch(() => getSiteSettings()),
+      fetchAllOrders().catch((e) => { console.error("Error fetching orders for admin", e); return []; }),
+    ]);
+
+    setSlotConfigs(remoteSlots);
+    setMeals(remoteMeals);
+    setAllAvailableMealsForPlanner(remoteMeals); 
+    setDailyMenuSchedules(remoteSchedules); 
     const currentTodos = getTodos();
     setTodos(currentTodos);
     const currentInventory = getInventoryItems();
     setInventory(currentInventory);
-    const allUsers = getManagedUsers().sort((a,b) => (a.lastName || "").localeCompare(b.lastName || ""));
-    setUsers(allUsers);
-    setPartners(getPartners());
-    const currentPartnerApps = getPartnerApplications().sort((a,b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
-    setPartnerApplications(currentPartnerApps);
+    const sortedUsers = [...remoteUsers].sort((a,b) => (a.lastName || "").localeCompare(b.lastName || ""));
+    setUsers(sortedUsers);
+    setPartners(sortedUsers.filter(u => u.role === UserRole.PARTNER && u.isApprovedByAdmin));
+    const sortedPartnerApps = [...remotePartnerApps].sort((a,b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+    setPartnerApplications(sortedPartnerApps);
     setPurchaseList(getPurchaseList());
     setPurchaseHistory(getPurchaseHistory());
     setConnectedSocialAccounts(getConnectedSocialAccounts());
     setConnectedEmailProviders(getConnectedEmailProviders());
     setCustomerLoyaltySettings(getCustomerLoyaltyProgramSettings());
-    setTestimonialsState(getTestimonials());
-    setSocialFeedItemsState(getSocialFeedItems());
-    setMainSocialLinksForm(getMainSocialLinks());
+    setTestimonialsState(remoteTestimonials);
+    setSocialFeedItemsState(remoteSocialItems);
+    setMainSocialLinksForm(remoteSocialLinks);
     setWhatsAppAnalytics(getWhatsAppAnalytics());
     setWhatsAppContacts(getWhatsAppContacts());
     setWhatsAppConversations(getWhatsAppConversations());
     setWhatsAppTemplates(getWhatsAppTemplates());
     setWhatsAppCampaigns(getWhatsAppCampaigns());
     setWhatsAppAutomations(getWhatsAppAutomations());
-    setLocalSiteSettings(getSiteSettings());
+    setLocalSiteSettings(remoteSiteSettings);
     
     setSocialPosts([{id: 'sp1', platform: 'Facebook', content: 'Try our new Paneer Tikka!', scheduledAt: new Date(Date.now() + 86400000).toISOString(), status: 'Scheduled', targetAccounts:[]}, {id: 'sp2', platform: 'Instagram', content: 'Weekend special offer!', scheduledAt: new Date(Date.now() + 2*86400000).toISOString(), status: 'Scheduled', imageUrl: 'https://picsum.photos/seed/insta/300/300', targetAccounts:[]}]);
     setEmailWorkflows([{id: 'ew1', name: 'Welcome New User', trigger: 'New User Signup', action: 'Send Welcome Brochure Email', isActive: true, targetSegment: 'New Users (Last 7 Days)', messageTemplate: 'Hi {{firstName}}, welcome!'}, {id: 'ew2', name: 'Post-Order Feedback', trigger: 'Order Delivered', action: 'Send Feedback Request Email', isActive: false, targetSegment: 'All Users', messageTemplate: 'Hope you enjoyed your {{lastOrderItemName}}!'}]);
-    
-    try {
-      const orders = await fetchAllOrders();
-      setAllOrders(orders);
-    } catch (e) { console.error("Error fetching orders for admin", e); setAllOrders([]); }
+    setAllOrders(orders);
     setLoadingMessage(null);
   }, [currentUser]);
   
   const loadManagerData = useCallback(async () => {
     setLoadingMessage("Loading dashboard data...");
-    const allMeals = getManagedMeals(currentUser!); 
+    const [allMeals, schedules, orders] = await Promise.all([
+      apiService.fetchDashboardMeals(currentUser!).catch(() => getManagedMeals(currentUser!)),
+      apiService.fetchDailyMenuSchedules().catch(() => getDailyMenuSchedules()),
+      fetchAllOrders().catch((e) => { console.error("Error fetching orders for manager", e); return []; }),
+    ]);
     setMeals(allMeals);
     setAllAvailableMealsForPlanner(allMeals); 
-    setDailyMenuSchedules(getDailyMenuSchedules());
+    setDailyMenuSchedules(schedules);
     setTodos(getTodos());
     setInventory(getInventoryItems());
     setPurchaseList(getPurchaseList());
     setPurchaseHistory(getPurchaseHistory());
     setActiveTab('orders'); // Manager default
-    try {
-      setAllOrders(await fetchAllOrders());
-    } catch (e) { console.error("Error fetching orders for manager", e); setAllOrders([]); }
+    setAllOrders(orders);
     setLoadingMessage(null);
   }, [currentUser]);
 
@@ -688,8 +710,32 @@ export const DashboardPage: React.FC = () => {
   const closeMealModal = () => setIsMealModalOpen(false);
   const handleMealFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { const { name, value } = e.target; setCurrentEditingMeal(prev => ({ ...prev, [name]: (name === 'price' || name === 'calories') && value !== '' ? Number(value) : value })); };
   const handleMealDietaryTagChange = (tag: DietaryPreference) => setCurrentEditingMeal(prev => { const currentTags = (prev as Meal).dietaryTags || []; const newTags = currentTags.includes(tag) ? currentTags.filter(t => t !== tag) : [...currentTags, tag]; return { ...prev, dietaryTags: newTags }; });
-  const handleMealSubmit = (e: React.FormEvent) => { e.preventDefault(); setMealFormError(''); if(!currentEditingMeal.name || (currentEditingMeal as Meal).price <=0 || !(currentEditingMeal as Meal).category || !(currentEditingMeal as Meal).imageUrl) { setMealFormError('Name, Price, Category, and Image are required.'); return; } const mealDataToSave = {...currentEditingMeal, ingredients: ingredientsInput.split(',').map(i => i.trim()).filter(i => i) }; if (isNewMeal) { addManagedMeal(mealDataToSave as Omit<Meal, 'id'>, currentUser); } else { updateManagedMeal(mealDataToSave as Meal, currentUser); } setMeals(getManagedMeals(currentUser!)); setAllAvailableMealsForPlanner(getManagedMeals(currentUser!)); closeMealModal(); };
-  const handleDeleteMeal = (mealId: string) => { if (window.confirm("Are you sure?")) { deleteManagedMeal(mealId, currentUser); setMeals(getManagedMeals(currentUser!)); setAllAvailableMealsForPlanner(getManagedMeals(currentUser!));} };
+  const handleMealSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMealFormError('');
+    if(!currentEditingMeal.name || (currentEditingMeal as Meal).price <=0 || !(currentEditingMeal as Meal).category || !(currentEditingMeal as Meal).imageUrl) {
+      setMealFormError('Name, Price, Category, and Image are required.');
+      return;
+    }
+    const mealDataToSave = {...currentEditingMeal, ingredients: ingredientsInput.split(',').map(i => i.trim()).filter(i => i) };
+    if (isNewMeal) {
+      await apiService.addDashboardMeal(mealDataToSave as Omit<Meal, 'id'>, currentUser);
+    } else {
+      await apiService.updateDashboardMeal(mealDataToSave as Meal, currentUser);
+    }
+    const refreshed = await apiService.fetchDashboardMeals(currentUser!);
+    setMeals(refreshed);
+    setAllAvailableMealsForPlanner(refreshed);
+    closeMealModal();
+  };
+  const handleDeleteMeal = async (mealId: string) => {
+    if (window.confirm("Are you sure?")) {
+      await apiService.deleteDashboardMeal(mealId, currentUser);
+      const refreshed = await apiService.fetchDashboardMeals(currentUser!);
+      setMeals(refreshed);
+      setAllAvailableMealsForPlanner(refreshed);
+    }
+  };
 
   const handleDailyMenuFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -709,14 +755,14 @@ export const DashboardPage: React.FC = () => {
         setDailyMenuPlannerForm(prev => ({ ...prev, [name]: value }));
     }
   };
-  const handleDailyMenuSubmit = (e: React.FormEvent) => {
+  const handleDailyMenuSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (dailyMenuPlannerForm.mealIds.length === 0) {
         alert("Please select at least one meal for the schedule.");
         return;
     }
-    addDailyMenuSchedule(dailyMenuPlannerForm);
-    setDailyMenuSchedules(getDailyMenuSchedules());
+    await apiService.addDailyMenuSchedule(dailyMenuPlannerForm);
+    setDailyMenuSchedules(await apiService.fetchDailyMenuSchedules());
     alert(`Menu for ${dailyMenuPlannerForm.date} - ${dailyMenuPlannerForm.mealSlot} saved!`);
     setDailyMenuPlannerForm(initialDailyMenuPlannerFormState); 
   };
@@ -750,16 +796,17 @@ export const DashboardPage: React.FC = () => {
   const openCrmUserDetails = (user: User) => { setSelectedUserForCrm(user); setIsCrmUserModalOpen(true); };
   const openCrmAiModal = (user: User) => { setSelectedUserForAi(user); setIsCrmAiModalOpen(true); };
 
-  const handlePartnerAppStatusChange = (appId: string, status: 'Approved' | 'Rejected') => { 
+  const handlePartnerAppStatusChange = async (appId: string, status: 'Approved' | 'Rejected') => { 
     const app = partnerApplications.find(a => a.id === appId);
     if (!app) return;
     if (window.confirm(`Are you sure you want to ${status.toLowerCase()} application for ${app.businessName}?`)) { 
-        updatePartnerApplicationStatus(appId, status); 
-        setPartnerApplications(getPartnerApplications()); 
+        await apiService.updatePartnerApplicationStatus(appId, status); 
+        setPartnerApplications(await apiService.fetchPartnerApplications()); 
         if (status === 'Approved') { 
-            setPartners(getPartners()); 
-            setUsers(getManagedUsers()); 
-            setShowPartnerApprovalMessage(`Partner application for ${app.businessName} has been ${status.toLowerCase()}. A mock welcome email & WhatsApp with login details (default password: 'password') and partner rules has been simulated.`);
+            const refreshedUsers = await apiService.fetchManagedUsers();
+            setPartners(refreshedUsers.filter(u => u.role === UserRole.PARTNER && u.isApprovedByAdmin)); 
+            setUsers(refreshedUsers); 
+            setShowPartnerApprovalMessage(`Partner application for ${app.businessName} has been ${status.toLowerCase()}. Please ask the partner to register or reset their password via secure email authentication.`);
             setTimeout(() => setShowPartnerApprovalMessage(''), 5000);
         }
     } 

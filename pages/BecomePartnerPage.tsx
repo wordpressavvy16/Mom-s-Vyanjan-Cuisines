@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { submitPartnerApplication } from '../services/configService';
+import * as apiService from '../services/apiService';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const BecomePartnerPage: React.FC = () => {
@@ -26,7 +26,7 @@ const BecomePartnerPage: React.FC = () => {
     }
 
     try {
-      await submitPartnerApplication({ applicantName, email, businessName, serviceAreaNotes });
+      await apiService.submitPartnerApplication({ applicantName, email, businessName, serviceAreaNotes });
       setSuccess("Your application has been submitted successfully! We will review it and get back to you soon.");
       // Clear form
       setApplicantName('');

@@ -1,0 +1,24 @@
+{
+  "projectId": "6afce033003648e4e486",
+  "projectName": "Mom's Vyanjan",
+  "endpoint": "https://sgp.cloud.appwrite.io/v1",
+  "functions": [
+    {
+      "$id": "order-processor",
+      "name": "Order Loyalty Processor",
+      "runtime": "node-22",
+      "execute": ["users"],
+      "events": [
+        "databases.6afd5fad00308dc976ef.collections.orders.documents.*.create"
+      ],
+      "scopes": [
+        "documents.read",
+        "documents.write"
+      ],
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "path": "functions/order-processor",
+      "timeout": 15
+    }
+  ]
+}
