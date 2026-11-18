@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+      METADATA & JUSTIFICATION BLOCK
+      - Variation File: Tiffin_Variation_4.html
+      - Persona Profile: The University Student
+      - Core Theme: Campus Cravings
+      - Design Rationale Summary: To create a trendy, expressive, and fun UI that appeals to a younger, budget-conscious audience. The design uses bold colors, quirky fonts, and playful animations to be visually engaging.
+      - Key Primitive Decisions:
+        - Color: A bold and stylishly clashing palette of magenta (#D9006C) and yellow (#FFC107) creates a vibrant, energetic, and youthful feel, perfect for grabbing attention.
+        - Typography: The expressive display font 'Fredoka One' for headers adds a touch of fun and personality, making the UI feel less corporate and more like a trendy campus spot.
+        - Interactivity: Bouncy, physics-based animations, like a "jiggle" on hover, make interactions fun and memorable, adding to the playful character of the design. Sharp, hard-edged shadows add a graphic, sticker-like quality.
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoM's Vyanjan | Campus Cravings Edition</title>
+    <meta name="description" content="Order delicious, authentic, home-style Indian tiffin meals online from MoM's Vyanjan. Freshly prepared, healthy, and delivered to your doorstep. Explore our daily menu!">
+    <meta name="keywords" content="tiffin service, indian food, home cooked meal, food delivery, lunch, dinner, vegetarian, healthy food, meal subscription">
+    <link rel="canonical" href="https://momsvyanjan.example.com/">
+    <link rel="robots" href="/robots.txt">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #FEFBF6; /* Off-white */
+        --surface-color: #FFFFFF;
+        --text-color: #111111;
+        --text-muted-color: #555555;
+        --border-color: #111111;
+        --primary-color: #D9006C; /* Magenta */
+        --accent-color: #FFC107; /* Yellow */
+        --secondary-color: #111111; /* Black for text and contrast */
+      }
+      
+      @keyframes jiggle {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-3deg); }
+        75% { transform: rotate(3deg); }
+      }
+      
+      html { scroll-behavior: smooth; }
+      body {
+        line-height: 1.6;
+        font-family: 'Lato', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      h1, h2, h3, h4, .font-display {
+        font-family: 'Fredoka One', cursive;
+        letter-spacing: 0.5px;
+      }
+      
+      /* Base Overrides */
+      .bg-light-background, .dark\:bg-dark-background { background-color: var(--bg-color) !important; }
+      .bg-light-surface, .dark\:bg-dark-surface { background-color: var(--surface-color) !important; }
+      .text-light-text, .dark\:text-dark-text { color: var(--text-color) !important; }
+      .text-light-muted, .dark\:text-dark-muted { color: var(--text-muted-color) !important; }
+      
+      /* Component Styling */
+      .rounded-lg, .rounded-xl, .rounded-md, .rounded-b-3xl {
+        border-radius: 8px !important;
+      }
+      .rounded-full { border-radius: 9999px !important; }
+
+      .shadow-lg, .shadow-md, .shadow-xl, .shadow-2xl, 
+      .bg-light-surface, .dark\:bg-dark-surface {
+        border: 2px solid var(--border-color) !important;
+        box-shadow: 4px 4px 0px var(--border-color) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .group:hover, button:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px var(--border-color) !important;
+      }
+
+      /* Buttons & Links */
+      .bg-primary { background-color: var(--primary-color) !important; color: white !important; }
+      .bg-primary:hover, .hover\:bg-primary-dark:hover { background-color: #b8005b !important; animation: jiggle 0.3s; }
+      .bg-secondary { background-color: var(--accent-color) !important; color: var(--text-color) !important; }
+      .bg-secondary:hover, .hover\:bg-secondary-dark:hover { background-color: #e6af06 !important; }
+
+      .text-primary { color: var(--primary-color) !important; }
+      .text-secondary, .dark\:text-accent { color: var(--secondary-color) !important; }
+      a:hover { color: var(--primary-color); text-decoration: underline; }
+
+      /* Color Blocking Example */
+      footer.bg-secondary {
+        background-color: var(--accent-color) !important;
+        color: var(--text-color) !important;
+      }
+      
+      @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: inherit; } }
+      .blinking-cursor { border-right: .15em solid; margin-left: .1em; }
+      @keyframes pulse { 50% { opacity: .5; } }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: {} }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-5BjYDUdm9lxJIPTXDVdyXYc8rCB6Jvg&callback=initMap"></script>
+    <script>
+      function initMap() { window.googleMapsApiLoaded = true; }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "MoM's Vyanjan Tiffin Service",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&h=630&q=80",
+      "url": "https://momsvyanjan.example.com/",
+      "telephone": "+1-234-567-890",
+      "servesCuisine": "Indian",
+      "priceRange": "$$",
+      "menu": "https://momsvyanjan.example.com/#/menu",
+      "address": { "@type": "PostalAddress", "streetAddress": "123 Food Street", "addressLocality": "Flavor Town", "postalCode": "90210", "addressCountry": "US" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 34.0522, "longitude": -118.2437 },
+      "openingHoursSpecification": [],
+      "potentialAction": { "@type": "OrderAction", "target": { "@type": "EntryPoint", "urlTemplate": "https://momsvyanjan.example.com/#/menu" } }
+    }
+    </script>
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

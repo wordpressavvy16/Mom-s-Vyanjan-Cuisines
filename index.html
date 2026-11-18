@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoM's Vyanjan | Authentic Home-Style Tiffin Service</title>
+    <meta name="description" content="Order delicious, authentic, home-style Indian tiffin meals online from MoM's Vyanjan. Freshly prepared, healthy, and delivered to your doorstep. Explore our daily menu!">
+    <meta name="keywords" content="tiffin service, indian food, home cooked meal, food delivery, lunch, dinner, vegetarian, healthy food, meal subscription">
+    <link rel="canonical" href="https://momsvyanjan.example.com/">
+    <link rel="robots" href="/robots.txt">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+      html {
+        /* Enables smooth scrolling for anchor links */
+        scroll-behavior: smooth;
+      }
+      body {
+        /* Sets a comfortable base line height for readability, especially for longer text blocks. */
+        line-height: 1.6;
+      }
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: inherit; }
+      }
+      .blinking-cursor {
+        border-right: .15em solid;
+        margin-left: .1em;
+      }
+       @keyframes pulse {
+        50% { opacity: .5; }
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#FF6B35', // Accent Orange
+              'primary-dark': '#D95B2D',
+              'primary-light': '#FFAA8A',
+              secondary: '#2D5016', // Primary Green
+              'secondary-dark': '#213B10',
+              accent: '#7CB342', // Secondary Green
+              'accent-dark': '#659136',
+              'accent-yellow': '#FFD23F',
+              
+              light: {
+                background: '#F8F9FA',
+                surface: '#FFFFFF',
+                text: '#212529',
+                muted: '#6c757d',
+              },
+              
+              // Senior-Optimized Warm Dark Theme
+              dark: {
+                background: '#1C1917',   // Warm black
+                surface: '#292524',      // Warm gray
+                text: '#FEF3E8',         // Warm white
+                muted: '#D6CCBC',        // Muted warm
+                accent: '#FFB366',       // Softer orange
+              },
+
+              // Status colors for dashboard
+              status: {
+                success: '#5CB85C',
+                warning: '#F0AD4E',
+                danger: '#D9534F',
+              }
+            },
+            fontFamily: {
+              sans: ['Lexend', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              display: ['Outfit', 'ui-serif', 'Georgia', 'serif'],
+            },
+            animation: {
+              'fade-in-scale': 'fadeInScale 300ms ease-out forwards',
+              'slide-up-fade': 'slideUpFade 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'image-reveal': 'imageReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'fade-in-pulse': 'fadeInPulse 500ms ease-out forwards',
+              'subtle-pulse': 'subtlePulse 2s ease-in-out infinite',
+              'badge-pop': 'badgePop 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+              'badge-glow': 'badgeGlow 400ms ease-out 300ms',
+              'shimmer-slide': 'shimmerSlide 3s infinite',
+              'shake': 'shake 300ms ease-out',
+              'subtle-float': 'subtleFloat 3s ease-in-out infinite',
+              'glare-effect': 'glareEffect 1s ease-in-out',
+            },
+            keyframes: {
+                fadeInScale: {
+                    'from': { opacity: 0, transform: 'scale(0.95)' },
+                    'to': { opacity: 1, transform: 'scale(1)' },
+                },
+                slideUpFade: {
+                    'from': { opacity: 0, transform: 'translateY(20px)' },
+                    'to': { opacity: 1, transform: 'translateY(0)' },
+                },
+                imageReveal: {
+                    'from': { 'clip-path': 'inset(0 50% 0 50%)' },
+                    'to': { 'clip-path': 'inset(0 0 0 0)' },
+                },
+                fadeInPulse: {
+                    'from': { opacity: 0, transform: 'scale(0.9)' },
+                    'to': { opacity: 1, transform: 'scale(1)' },
+                },
+                subtlePulse: {
+                    '0%, 100%': { opacity: 0, transform: 'scale(1)' },
+                    '50%': { opacity: 0.3, transform: 'scale(1.05)' },
+                },
+                badgePop: {
+                    '0%': { transform: 'scale(1)' },
+                    '50%': { transform: 'scale(1.3)' },
+                    '100%': { transform: 'scale(1)' },
+                },
+                badgeGlow: {
+                    '0%, 100%': { 'box-shadow': '0 0 0 0 rgba(255, 107, 53, 0.7)' },
+                    '50%': { 'box-shadow': '0 0 0 8px rgba(255, 107, 53, 0)' },
+                },
+                shimmerSlide: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(100%)' },
+                },
+                shake: {
+                    '0%, 100%': { transform: 'translateX(0)' },
+                    '25%': { transform: 'translateX(-5px)' },
+                    '75%': { transform: 'translateX(5px)' },
+                },
+                subtleFloat: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-3px)' },
+                },
+                glareEffect: {
+                    '0%': { transform: 'translateX(-150%) skewX(-25deg)', opacity: '0.2' },
+                    '100%': { transform: 'translateX(150%) skewX(-25deg)', opacity: '0' },
+                },
+            }
+          }
+        }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-5BjYDUdm9lxJIPTXDVdyXYc8rCB6Jvg&callback=initMap"></script>
+    <script>
+      function initMap() {
+        // console.log("Google Maps API script has been loaded and initMap was called.");
+        window.googleMapsApiLoaded = true;
+      }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "MoM's Vyanjan Tiffin Service",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&h=630&q=80",
+      "url": "https://momsvyanjan.example.com/",
+      "telephone": "+1-234-567-890",
+      "servesCuisine": "Indian",
+      "priceRange": "$$",
+      "menu": "https://momsvyanjan.example.com/#/menu",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Food Street",
+        "addressLocality": "Flavor Town",
+        "postalCode": "90210",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 34.0522,
+        "longitude": -118.2437
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "09:00",
+          "closes": "11:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "13:00",
+          "closes": "15:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "20:00",
+          "closes": "22:00"
+        }
+      ],
+      "potentialAction": {
+        "@type": "OrderAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://momsvyanjan.example.com/#/menu",
+          "inLanguage": "en-US",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/IOSPlatform",
+            "http://schema.org/AndroidPlatform"
+          ]
+        },
+        "deliveryMethod": "http://schema.org/Delivery"
+      }
+    }
+    </script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

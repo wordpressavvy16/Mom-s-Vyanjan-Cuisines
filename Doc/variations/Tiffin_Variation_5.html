@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+      METADATA & JUSTIFICATION BLOCK
+      - Variation File: Tiffin_Variation_5.html
+      - Persona Profile: The Corporate Executive
+      - Core Theme: Power Lunch
+      - Design Rationale Summary: To create a premium, sophisticated, and professional UI that conveys exclusivity. The design uses a formal layout, a luxurious color palette, and elegant typography to provide a seamless, high-end experience.
+      - Key Primitive Decisions:
+        - Color: A muted and luxurious palette of navy blue (#001f3f) and grays, with a single metallic gold accent (#D4AF37), creates a sense of professionalism and exclusivity.
+        - Typography: The elegant serif font 'Playfair Display' for headings establishes a formal, premium tone, while 'Roboto' for body text ensures professional clarity and readability.
+        - Interactivity: Understated and graceful cross-fade transitions on hover provide an elegant user experience without being distracting, reflecting a professional and seamless interaction model.
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoM's Vyanjan | Power Lunch Edition</title>
+    <meta name="description" content="Order delicious, authentic, home-style Indian tiffin meals online from MoM's Vyanjan. Freshly prepared, healthy, and delivered to your doorstep. Explore our daily menu!">
+    <meta name="keywords" content="tiffin service, indian food, home cooked meal, food delivery, lunch, dinner, vegetarian, healthy food, meal subscription">
+    <link rel="canonical" href="https://momsvyanjan.example.com/">
+    <link rel="robots" href="/robots.txt">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #F4F6F8; /* Light Gray */
+        --surface-color: #FFFFFF;
+        --text-color: #001f3f; /* Navy Blue */
+        --text-muted-color: #6c757d;
+        --border-color: #EAECEE; /* Hairline Border */
+        --accent-color: #D4AF37; /* Metallic Gold */
+        --primary-color: #001f3f; /* Navy Blue */
+        --secondary-color: #D4AF37; /* Gold */
+      }
+      
+      html { scroll-behavior: smooth; }
+      body {
+        line-height: 1.6;
+        font-family: 'Roboto', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      h1, h2, h3, h4, .font-display {
+        font-family: 'Playfair Display', serif;
+      }
+      
+      /* Base Overrides */
+      .bg-light-background, .dark\:bg-dark-background { background-color: var(--bg-color) !important; }
+      .bg-light-surface, .dark\:bg-dark-surface { background-color: var(--surface-color) !important; }
+      .text-light-text, .dark\:text-dark-text { color: var(--text-color) !important; }
+      .text-light-muted, .dark\:text-dark-muted { color: var(--text-muted-color) !important; }
+      .text-secondary { color: var(--primary-color) !important; }
+      .dark\:text-accent, .text-primary { color: var(--accent-color) !important; }
+      
+      /* Layout & Spacing */
+      section { padding-top: 5rem; padding-bottom: 5rem; }
+      .container { max-width: 1200px; }
+
+      /* Component Styling */
+      .rounded-lg, .rounded-xl, .rounded-md, .rounded-b-3xl {
+        border-radius: 4px !important;
+      }
+      .rounded-full { border-radius: 9999px !important; }
+      .shadow-lg, .shadow-md, .shadow-xl, .shadow-2xl {
+        box-shadow: none !important;
+        border: 1px solid var(--border-color);
+      }
+
+      /* Buttons & Links */
+      a, button {
+        transition: all 0.4s ease;
+      }
+      .bg-primary { background-color: var(--primary-color) !important; color: white !important; }
+      .bg-primary:hover, .hover\:bg-primary-dark:hover { background-color: #003366 !important; } /* Darker Navy */
+      footer.bg-secondary { background-color: var(--primary-color) !important; color: white !important; }
+      .hover\:text-primary:hover { color: var(--accent-color) !important; }
+      .text-accent, .dark\:hover\:text-dark-accent:hover { color: var(--accent-color) !important; }
+      
+      /* Elegant hover for cards */
+      .group:hover {
+        border-color: var(--accent-color) !important;
+        transform: translateY(-4px);
+      }
+      
+      @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: inherit; } }
+      .blinking-cursor { border-right: .15em solid; margin-left: .1em; }
+       @keyframes pulse { 50% { opacity: .5; } }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: {} }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-5BjYDUdm9lxJIPTXDVdyXYc8rCB6Jvg&callback=initMap"></script>
+    <script>
+      function initMap() { window.googleMapsApiLoaded = true; }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "MoM's Vyanjan Tiffin Service",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&h=630&q=80",
+      "url": "https://momsvyanjan.example.com/",
+      "telephone": "+1-234-567-890",
+      "servesCuisine": "Indian",
+      "priceRange": "$$$",
+      "menu": "https://momsvyanjan.example.com/#/menu",
+      "address": { "@type": "PostalAddress", "streetAddress": "123 Food Street", "addressLocality": "Flavor Town", "postalCode": "90210", "addressCountry": "US" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 34.0522, "longitude": -118.2437 },
+      "openingHoursSpecification": [],
+      "potentialAction": { "@type": "OrderAction", "target": { "@type": "EntryPoint", "urlTemplate": "https://momsvyanjan.example.com/#/menu" } }
+    }
+    </script>
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

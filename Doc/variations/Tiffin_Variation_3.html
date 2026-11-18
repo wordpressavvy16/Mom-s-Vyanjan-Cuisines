@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+      METADATA & JUSTIFICATION BLOCK
+      - Variation File: Tiffin_Variation_3.html
+      - Persona Profile: The Traditional Home-Seeker (Senior Citizen)
+      - Core Theme: Ghar Ka Khana
+      - Design Rationale Summary: To create a trustworthy, simple, and effortless UI for users who prioritize clarity and readability above all else. The design avoids all complex interactions and uses high-contrast, warm colors for comfort.
+      - Key Primitive Decisions:
+        - Color: A warm, high-contrast palette with a creamy background (#FFFDD0) and deep maroon text (#5C0000) is chosen for its excellent readability and comforting, traditional feel.
+        - Typography: A highly legible serif, 'Lora', is paired with a clear sans-serif, 'Lato', at a larger base font size (18px) to ensure text is easy to read without strain.
+        - Interactivity: All non-essential animations and transitions are disabled. Interactive elements use a simple, clear background color change on hover, providing unambiguous feedback without being distracting.
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoM's Vyanjan | Ghar Ka Khana Edition</title>
+    <meta name="description" content="Order delicious, authentic, home-style Indian tiffin meals online from MoM's Vyanjan. Freshly prepared, healthy, and delivered to your doorstep. Explore our daily menu!">
+    <meta name="keywords" content="tiffin service, indian food, home cooked meal, food delivery, lunch, dinner, vegetarian, healthy food, meal subscription">
+    <link rel="canonical" href="https://momsvyanjan.example.com/">
+    <link rel="robots" href="/robots.txt">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #FFFDD0; /* Cream */
+        --surface-color: #FAFAD2; /* LightGoldenRodYellow */
+        --text-color: #5C0000; /* Deep Maroon */
+        --text-muted-color: #800000; /* Maroon */
+        --border-color: #D2B48C; /* Tan */
+        --primary-color: #FF9933; /* Saffron Orange */
+        --secondary-color: #800000; /* Maroon */
+      }
+      
+      html { scroll-behavior: smooth; }
+      body {
+        line-height: 1.7;
+        font-family: 'Lato', sans-serif;
+        font-size: 18px; /* Larger base font size */
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      h1, h2, h3, h4, .font-display {
+        font-family: 'Lora', serif;
+      }
+      
+      /* Disable animations */
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+      
+      /* Base Overrides */
+      .bg-light-background, .dark\:bg-dark-background { background-color: var(--bg-color) !important; }
+      .bg-light-surface, .dark\:bg-dark-surface { background-color: var(--surface-color) !important; border: 1px solid var(--border-color); }
+      .text-light-text, .dark\:text-dark-text { color: var(--text-color) !important; }
+      .text-light-muted, .dark\:text-dark-muted { color: var(--text-muted-color) !important; }
+      .text-secondary, .dark\:text-accent { color: var(--secondary-color) !important; }
+      .text-primary { color: var(--primary-color) !important; }
+      
+      /* Component Styling */
+      .rounded-lg, .rounded-xl, .rounded-md, .rounded-b-3xl {
+        border-radius: 4px !important; /* Minimal rounding */
+      }
+      .rounded-full { border-radius: 9999px !important; }
+      .shadow-lg, .shadow-md, .shadow-xl, .shadow-2xl {
+        box-shadow: none !important;
+        border: 1px solid var(--border-color);
+      }
+      
+      /* Buttons & Links */
+      button, a {
+        border: 2px solid transparent;
+      }
+      button:hover, a:hover {
+        background-color: rgba(0,0,0,0.05);
+        text-decoration: underline;
+      }
+      .bg-primary { background-color: var(--primary-color) !important; color: var(--text-color) !important; border: 2px solid var(--text-color) !important; }
+      .bg-primary:hover, .hover\:bg-primary-dark:hover { background-color: #e68a2e !important; }
+      .bg-secondary { background-color: var(--secondary-color) !important; color: var(--bg-color) !important; }
+      .bg-secondary:hover, .hover\:bg-secondary-dark:hover { background-color: #660000 !important; }
+      
+      @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: inherit; } }
+      .blinking-cursor { border-right: .15em solid; margin-left: .1em; }
+       @keyframes pulse { 50% { opacity: .5; } }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: {} }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-5BjYDUdm9lxJIPTXDVdyXYc8rCB6Jvg&callback=initMap"></script>
+    <script>
+      function initMap() { window.googleMapsApiLoaded = true; }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "MoM's Vyanjan Tiffin Service",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&h=630&q=80",
+      "url": "https://momsvyanjan.example.com/",
+      "telephone": "+1-234-567-890",
+      "servesCuisine": "Indian",
+      "priceRange": "$$",
+      "menu": "https://momsvyanjan.example.com/#/menu",
+      "address": { "@type": "PostalAddress", "streetAddress": "123 Food Street", "addressLocality": "Flavor Town", "postalCode": "90210", "addressCountry": "US" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 34.0522, "longitude": -118.2437 },
+      "openingHoursSpecification": [],
+      "potentialAction": { "@type": "OrderAction", "target": { "@type": "EntryPoint", "urlTemplate": "https://momsvyanjan.example.com/#/menu" } }
+    }
+    </script>
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

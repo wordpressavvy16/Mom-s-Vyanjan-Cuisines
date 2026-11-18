@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+      METADATA & JUSTIFICATION BLOCK
+      - Variation File: Tiffin_Variation_2.html
+      - Persona Profile: The Health-Conscious Fitness Enthusiast
+      - Core Theme: FitBites
+      - Design Rationale Summary: To create a clean, inspiring, and organic UI that motivates healthy choices. The design uses an airy layout, natural colors, and fluid animations to feel fresh and energetic.
+      - Key Primitive Decisions:
+        - Color: A light-mode native palette with leafy green (#28a745) and clean white evokes freshness and nature, while a vibrant coral accent (#FF7F50) adds a splash of energy to calls-to-action.
+        - Typography: 'Nunito' is a humanist sans-serif with rounded terminals, which gives it a friendly, approachable, and less rigid feel, aligning with an organic theme.
+        - Interactivity: Gentle, fluid animations (0.4s cubic-bezier) and a subtle "grow" effect on card hover provide a smooth, satisfying interaction that feels organic rather than mechanical.
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoM's Vyanjan | FitBites Edition</title>
+    <meta name="description" content="Order delicious, authentic, home-style Indian tiffin meals online from MoM's Vyanjan. Freshly prepared, healthy, and delivered to your doorstep. Explore our daily menu!">
+    <meta name="keywords" content="tiffin service, indian food, home cooked meal, food delivery, lunch, dinner, vegetarian, healthy food, meal subscription">
+    <link rel="canonical" href="https://momsvyanjan.example.com/">
+    <link rel="robots" href="/robots.txt">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #FFFFFF;
+        --surface-color: #F8F9FA;
+        --text-color: #212529;
+        --text-muted-color: #6c757d;
+        --border-color: #DEE2E6;
+        --accent-color: #FF7F50; /* Coral */
+        --primary-color: #28a745; /* Leafy Green */
+        --secondary-color: #28a745;
+      }
+      
+      html { scroll-behavior: smooth; }
+      body {
+        line-height: 1.6;
+        font-family: 'Nunito', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      
+      /* Base Overrides */
+      .bg-light-background { background-color: var(--bg-color) !important; }
+      .dark\:bg-dark-background { background-color: var(--bg-color) !important; } /* Force light mode */
+      .bg-light-surface, .dark\:bg-dark-surface { background-color: var(--surface-color) !important; border: 1px solid var(--border-color); }
+      .text-light-text, .dark\:text-dark-text { color: var(--text-color) !important; }
+      .text-light-muted, .dark\:text-dark-muted { color: var(--text-muted-color) !important; }
+      .text-secondary, .dark\:text-accent { color: var(--primary-color) !important; }
+
+      /* Component Styling */
+      .rounded-lg, .rounded-xl, .rounded-md, .rounded-b-3xl {
+        border-radius: 12px !important;
+      }
+      .rounded-full { border-radius: 9999px !important; }
+      .shadow-lg, .shadow-md, .shadow-xl, .shadow-2xl {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+      }
+      .hover\:shadow-2xl:hover {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+      }
+
+      /* Buttons & Links */
+      a, button, .group {
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      .bg-primary { background-color: var(--accent-color) !important; }
+      .bg-primary:hover, .hover\:bg-primary-dark:hover { background-color: #e66a3a !important; }
+      .bg-secondary { background-color: var(--secondary-color) !important; }
+      .bg-secondary:hover, .hover\:bg-secondary-dark:hover { background-color: #218838 !important; }
+      .text-primary, .hover\:text-primary:hover { color: var(--accent-color) !important; }
+      a:hover { color: var(--accent-color); }
+      
+      /* Meal Card Grow Effect */
+      .group:hover {
+        transform: scale(1.03) !important;
+      }
+
+      /* Icons */
+      svg { fill: currentColor; } /* Soft, filled icons */
+      
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: var(--primary-color); }
+      }
+      .blinking-cursor {
+        border-right: .15em solid var(--primary-color);
+        margin-left: .1em;
+      }
+       @keyframes pulse {
+        50% { opacity: .5; }
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Keep tailwind config to avoid breaking the app, but CSS overrides it.
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#FF6B35', 'primary-dark': '#D95B2D',
+              secondary: '#2D5016', 'secondary-dark': '#213B10',
+            },
+            fontFamily: {
+              sans: ['Lexend', 'sans-serif'],
+              display: ['Outfit', 'serif'],
+            },
+          }
+        }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-5BjYDUdm9lxJIPTXDVdyXYc8rCB6Jvg&callback=initMap"></script>
+    <script>
+      function initMap() { window.googleMapsApiLoaded = true; }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "MoM's Vyanjan Tiffin Service",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&h=630&q=80",
+      "url": "https://momsvyanjan.example.com/",
+      "telephone": "+1-234-567-890",
+      "servesCuisine": "Indian",
+      "priceRange": "$$",
+      "menu": "https://momsvyanjan.example.com/#/menu",
+      "address": { "@type": "PostalAddress", "streetAddress": "123 Food Street", "addressLocality": "Flavor Town", "postalCode": "90210", "addressCountry": "US" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 34.0522, "longitude": -118.2437 },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "11:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "13:00", "closes": "15:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "20:00", "closes": "22:00" }
+      ],
+      "potentialAction": { "@type": "OrderAction", "target": { "@type": "EntryPoint", "urlTemplate": "https://momsvyanjan.example.com/#/menu" } }
+    }
+    </script>
+</head>
+<body class="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
