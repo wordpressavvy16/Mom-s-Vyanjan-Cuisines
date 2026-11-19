@@ -25,6 +25,9 @@ In Appwrite Console → **Overview → Integrations → API Keys → Create API 
 - `indexes.read`, `indexes.write`
 - `documents.read`, `documents.write`
 - `users.read`, `users.write` (for admin user management)
+- `buckets.read`, `buckets.write`, `files.read`, `files.write` (for the `media` Storage Bucket)
+
+> **About S3:** Appwrite Storage already serves images and uploads natively via the Appwrite SDK (`appwriteStorage` / `media` bucket)—no S3 keys are needed in the app. Only fill the `S3_*` variables in **`.env.local`** (never commit secrets in `.env.example`) if you connect an external S3 CLI or sync tool.
 
 ---
 

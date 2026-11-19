@@ -12,12 +12,14 @@ import {
   Client,
   Account,
   Databases,
+  Storage,
   Query,
   Permission,
   Role,
   ID,
   AppwriteException,
 } from 'node-appwrite';
+import { InputFile } from 'node-appwrite/file';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -47,12 +49,14 @@ function getAppwriteServerConfig() {
   const endpoint = (process.env.APPWRITE_ENDPOINT || process.env.VITE_APPWRITE_ENDPOINT || '').trim();
   const projectId = (process.env.APPWRITE_PROJECT_ID || process.env.VITE_APPWRITE_PROJECT_ID || '').trim();
   const databaseId = (process.env.APPWRITE_DATABASE_ID || process.env.VITE_APPWRITE_DATABASE_ID || '').trim();
+  const bucketMediaId = (process.env.APPWRITE_BUCKET_MEDIA || process.env.VITE_APPWRITE_BUCKET_MEDIA || 'media').trim();
   const apiKey = (process.env.APPWRITE_API_KEY || '').trim();
 
   return {
     endpoint,
     projectId,
     databaseId,
+    bucketMediaId,
     apiKey,
     collections: {
       users: process.env.VITE_APPWRITE_COLLECTION_USERS || 'users',
@@ -66,7 +70,7 @@ function getAppwriteServerConfig() {
   };
 }
 
-function getAdminDatabases(): { databases: Databases; databaseId: string; collections: ReturnType<typeof getAppwriteServerConfig>['collections'] } | null {
+function getAdminDatabases(): { databases: Databases; storage: Storage; databaseId: string; bucketMediaId: string; collections: ReturnType<typeof getAppwriteServerConfig>['collections'] } | null {
   const cfg = getAppwriteServerConfig();
   if (!cfg.endpoint || !cfg.projectId || !cfg.databaseId || !cfg.apiKey) {
     return null;
@@ -78,7 +82,9 @@ function getAdminDatabases(): { databases: Databases; databaseId: string; collec
 
   return {
     databases: new Databases(client),
+    storage: new Storage(client),
     databaseId: cfg.databaseId,
+    bucketMediaId: cfg.bucketMediaId,
     collections: cfg.collections,
   };
 }
@@ -321,7 +327,7 @@ async function startServer() {
     })
   );
 
-  app.use(express.json({ limit: '1mb' }));
+  app.use(express.json({ limit: '8mb' }));
 
   const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -355,8 +361,79 @@ async function startServer() {
     res.json({
       ok: true,
       serverAppwriteConfigured: Boolean(cfg.endpoint && cfg.projectId && cfg.databaseId && cfg.apiKey),
+      storageBucketConfigured: Boolean(cfg.bucketMediaId && cfg.apiKey),
       geminiConfigured: Boolean(getGeminiClient()),
     });
+  });
+
+  // --- Storage Proxy Routes (Works even when Appwrite bucket permissions are private) ---
+  app.post('/api/storage/upload', requireAuth, async (req: AuthedRequest, res: Response) => {
+    const admin = requireServerAppwrite(res);
+    if (!admin || !req.authUser) return;
+    try {
+      const { filename, mimeType, dataBase64 } = req.body || {};
+      const allowedMimeTypes: Record<string, string> = {
+        'image/jpeg': 'jpg',
+        'image/jpg': 'jpg',
+        'image/png': 'png',
+        'image/webp': 'webp',
+        'image/gif': 'gif',
+      };
+      const normalizedMime = String(mimeType || '').toLowerCase().trim();
+      const ext = allowedMimeTypes[normalizedMime];
+      if (!ext || typeof dataBase64 !== 'string' || !dataBase64) {
+        res.status(400).json({ error: 'Only jpg, png, webp, or gif images are allowed.' });
+        return;
+      }
+
+      const rawBase64 = dataBase64.includes(',') ? dataBase64.split(',')[1] : dataBase64;
+      const buffer = Buffer.from(rawBase64, 'base64');
+      if (buffer.length === 0 || buffer.length > 5 * 1024 * 1024) {
+        res.status(400).json({ error: 'Image must be non-empty and under 5MB.' });
+        return;
+      }
+
+      const safeBaseName = sanitizeString(filename || 'upload', 80).replace(/[^a-zA-Z0-9._-]/g, '_') || 'upload';
+      const finalName = safeBaseName.includes('.') ? safeBaseName : `${safeBaseName}.${ext}`;
+
+      const uploaded = await admin.storage.createFile({
+        bucketId: admin.bucketMediaId,
+        fileId: ID.unique(),
+        file: InputFile.fromBuffer(buffer, finalName),
+      });
+
+      res.status(201).json({
+        fileId: uploaded.$id,
+        url: `/api/storage/files/${uploaded.$id}`,
+      });
+    } catch (err) {
+      handleServerError(res, err, 'Failed to upload image to Appwrite Storage.');
+    }
+  });
+
+  app.get('/api/storage/files/:fileId', async (req: Request, res: Response) => {
+    const admin = requireServerAppwrite(res);
+    if (!admin) return;
+    try {
+      const fileId = sanitizeString(req.params.fileId, 64);
+      if (!/^[a-zA-Z0-9._-]+$/.test(fileId)) {
+        res.status(400).json({ error: 'Invalid file ID.' });
+        return;
+      }
+      const meta = await admin.storage.getFile({
+        bucketId: admin.bucketMediaId,
+        fileId,
+      });
+      const arrayBuf = await admin.storage.getFileView({
+        bucketId: admin.bucketMediaId,
+        fileId,
+      });
+      res.setHeader('Content-Type', meta.mimeType || 'application/octet-stream');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.send(Buffer.from(arrayBuf));
+    } catch (err) {
+      handleServerError(res, err, 'Failed to load media file.');
+    }
   });
 
   // --- User Profile & RBAC Routes ---

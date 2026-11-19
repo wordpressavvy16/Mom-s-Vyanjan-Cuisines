@@ -23,6 +23,9 @@ export const APPWRITE_CONFIG = {
     purchaseOrders: import.meta.env.VITE_APPWRITE_COLLECTION_PURCHASE_ORDERS || 'purchase_orders',
     todos: import.meta.env.VITE_APPWRITE_COLLECTION_TODOS || 'todos',
   },
+  buckets: {
+    media: import.meta.env.VITE_APPWRITE_BUCKET_MEDIA || 'media',
+  },
 } as const;
 
 export function isAppwriteConfigured(): boolean {

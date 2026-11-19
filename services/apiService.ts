@@ -507,3 +507,37 @@ export const addDailyMenuSchedule = async (schedule: DailyMenuSchedule): Promise
     () => undefined
   );
 };
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Failed to read selected file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+export const uploadImageFile = async (file: File, ownerUserId?: string): Promise<string> => {
+  const dataUrl = await fileToBase64(file);
+  try {
+    const res = await serverApiFetch<{ fileId: string; url: string }>('/api/storage/upload', {
+      method: 'POST',
+      requireAuth: true,
+      body: {
+        filename: file.name,
+        mimeType: file.type,
+        dataBase64: dataUrl,
+      },
+    });
+    return res.url;
+  } catch (err: any) {
+    if (err?.status === 401 || err?.status === 403 || err?.status === 400) {
+      throw err;
+    }
+    try {
+      return await appwriteService.uploadMediaFileToAppwrite(file, ownerUserId);
+    } catch {
+      return dataUrl;
+    }
+  }
+};

@@ -1,6 +1,7 @@
 import {
   appwriteAccount,
   appwriteDatabases,
+  appwriteStorage,
   appwriteRealtime,
   APPWRITE_CONFIG,
   isAppwriteConfigured,
@@ -848,5 +849,28 @@ export async function saveDailyMenuScheduleToAppwrite(schedule: DailyMenuSchedul
       mealIds: JSON.stringify(schedule.mealIds),
       isSpecial: Boolean(schedule.isSpecial),
     },
+  });
+}
+
+// --- Storage (Media Bucket) ---
+
+export async function uploadMediaFileToAppwrite(file: File, ownerUserId?: string): Promise<string> {
+  assertConfigured();
+  const permissions = [Permission.read(Role.any())];
+  if (ownerUserId) {
+    permissions.push(Permission.update(Role.user(ownerUserId)));
+    permissions.push(Permission.delete(Role.user(ownerUserId)));
+  }
+
+  const uploaded = await appwriteStorage.createFile({
+    bucketId: APPWRITE_CONFIG.buckets.media,
+    fileId: ID.unique(),
+    file,
+    permissions,
+  });
+
+  return appwriteStorage.getFileView({
+    bucketId: APPWRITE_CONFIG.buckets.media,
+    fileId: uploaded.$id,
   });
 }

@@ -574,7 +574,7 @@ export const DashboardPage: React.FC = () => {
 
   const quickReplies = ["Hello! How can I help you?", "Yes, we can do that.", "Please allow us a moment to check.", "Thank you for contacting MoM's Vyanjan."];
 
-  const handleFileSelection = (e: React.ChangeEvent<HTMLInputElement>, onFileReady: (dataUrl: string) => void, maxSizeMB: number = 5) => {
+  const handleFileSelection = async (e: React.ChangeEvent<HTMLInputElement>, onFileReady: (dataUrl: string) => void, maxSizeMB: number = 5) => {
     if (e.target.files && e.target.files[0]) {
         const file = e.target.files[0];
         if (file.size > maxSizeMB * 1024 * 1024) {
@@ -582,11 +582,13 @@ export const DashboardPage: React.FC = () => {
             if(e.target) e.target.value = '';
             return;
         }
-        const reader = new FileReader();
-        reader.onload = (loadEvent) => {
-            onFileReady(loadEvent.target?.result as string);
-        };
-        reader.readAsDataURL(file);
+        try {
+            const uploadedUrl = await apiService.uploadImageFile(file, currentUser?.id);
+            onFileReady(uploadedUrl);
+        } catch (err) {
+            console.error('File upload failed:', err);
+            alert('Could not process selected file.');
+        }
     }
   };
 

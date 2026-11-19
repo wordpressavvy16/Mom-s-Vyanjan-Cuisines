@@ -8,6 +8,7 @@ import StarInput from '../components/StarInput';
 import StarRatingDisplay from '../components/StarRatingDisplay';
 import { submitReview } from '../services/mockDataService';
 import { getCustomerLoyaltyProgramSettings } from '../services/configService';
+import * as apiService from '../services/apiService';
 
 // --- SUB-COMPONENTS FOR TABS ---
 
@@ -54,11 +55,21 @@ const SettingsTabContent: React.FC = () => {
         }
     };
 
-    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (loadEvent) => setAvatarPreview(loadEvent.target?.result as string);
-            reader.readAsDataURL(e.target.files[0]);
+            const file = e.target.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File is too large. Please select an image under 5MB.');
+                e.target.value = '';
+                return;
+            }
+            try {
+                const uploadedUrl = await apiService.uploadImageFile(file, currentUser?.id);
+                setAvatarPreview(uploadedUrl);
+            } catch (err) {
+                console.error('Avatar upload failed:', err);
+                alert('Could not upload selected image.');
+            }
         }
     };
     

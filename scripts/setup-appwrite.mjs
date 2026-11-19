@@ -12,7 +12,8 @@ dotenv.config({ path: '.env.local' });
  * Required API Key Scopes in Appwrite Console:
  *   databases.read, databases.write, collections.read, collections.write,
  *   attributes.read, attributes.write, indexes.read, indexes.write,
- *   documents.read, documents.write
+ *   documents.read, documents.write,
+ *   buckets.read, buckets.write, files.read, files.write
  */
 
 const ENDPOINT = process.env.APPWRITE_ENDPOINT || process.env.VITE_APPWRITE_ENDPOINT;
@@ -82,6 +83,28 @@ async function ensureCollection(collectionId, name, permissions, documentSecurit
       enabled: true,
     });
     console.log(`✓ Created collection "${collectionId}" (documentSecurity=${documentSecurity}).`);
+  }
+}
+
+async function ensureBucket(bucketId, name, permissions) {
+  try {
+    await appwriteFetch(`/storage/buckets/${bucketId}`);
+    console.log(`✓ Storage bucket "${bucketId}" already exists.`);
+  } catch (err) {
+    if (err.status !== 404) throw err;
+    await appwriteFetch('/storage/buckets', 'POST', {
+      bucketId,
+      name,
+      permissions,
+      fileSecurity: true,
+      enabled: true,
+      maximumFileSize: 5 * 1024 * 1024, // 5 MB
+      allowedFileExtensions: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+      compression: 'none',
+      encryption: true,
+      antivirus: true,
+    });
+    console.log(`✓ Created storage bucket "${bucketId}".`);
   }
 }
 
@@ -369,6 +392,13 @@ async function main() {
     customizationOptions: JSON.stringify({ spiceLevel: ['Mild', 'Medium', 'Hot'], portionSize: ['Regular', 'Large'] }),
     partnerId: '',
   });
+
+  // Provision Storage Bucket for meal photos, logos, and profile avatars
+  await ensureBucket(
+    process.env.VITE_APPWRITE_BUCKET_MEDIA || 'media',
+    "MoM's Vyanjan Media",
+    ['read("any")', 'create("users")']
+  );
 
   console.log('\n✅ Appwrite setup complete!');
 }

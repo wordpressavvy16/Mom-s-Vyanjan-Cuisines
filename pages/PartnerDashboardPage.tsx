@@ -59,7 +59,7 @@ const PartnerDashboardPage: React.FC = () => {
   }, [currentUser, authLoading, navigate]);
 
   
-  const handleFileSelection = (e: React.ChangeEvent<HTMLInputElement>, onFileReady: (dataUrl: string) => void, maxSizeMB: number = 5) => {
+  const handleFileSelection = async (e: React.ChangeEvent<HTMLInputElement>, onFileReady: (dataUrl: string) => void, maxSizeMB: number = 5) => {
     if (e.target.files && e.target.files[0]) {
         const file = e.target.files[0];
         if (file.size > maxSizeMB * 1024 * 1024) {
@@ -67,11 +67,13 @@ const PartnerDashboardPage: React.FC = () => {
             if(e.target) e.target.value = '';
             return;
         }
-        const reader = new FileReader();
-        reader.onload = (loadEvent) => {
-            onFileReady(loadEvent.target?.result as string);
-        };
-        reader.readAsDataURL(file);
+        try {
+            const uploadedUrl = await apiService.uploadImageFile(file, currentUser?.id);
+            onFileReady(uploadedUrl);
+        } catch (err) {
+            console.error('Partner file upload failed:', err);
+            alert('Could not process selected file.');
+        }
     }
   };
 
